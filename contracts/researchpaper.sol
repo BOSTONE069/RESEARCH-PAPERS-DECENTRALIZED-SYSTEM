@@ -87,4 +87,23 @@ contract ResearchPapers {
         // Make sure paper has been published
         require(papers[paperHash].timestamp != 0, "This paper has not been published yet.");
         // Make sure user has enough ISP tokens to view paper
-        require(balances[msg.sender] > 0, "You need to
+        require(balances[msg.sender] > 0, "You need to purchase ISP tokens to view this paper.");
+
+        balances[msg.sender]--;
+
+        return true;
+    }
+
+    // Function to withdraw funds from contract balance
+function withdraw() public returns (bool) {
+    uint256 amount = address(this).balance;
+    // Make sure balance is greater than zero
+    require(amount > 0, "Insufficient funds.");
+
+    // Transfer balance to sender address
+    payable(msg.sender).transfer(amount);
+
+    return true;
+    }
+
+}
