@@ -95,15 +95,15 @@ contract ResearchPapers {
     }
 
     // Function to withdraw funds from contract balance
-function withdraw() public returns (bool) {
-    uint256 amount = address(this).balance;
-    // Make sure balance is greater than zero
-    require(amount > 0, "Insufficient funds.");
+    function withdraw() public returns (bool) {
+        uint256 amount = address(this).balance;
+        // Make sure balance is greater than zero
+        require(amount > 0, "Insufficient funds.");
 
-    // Transfer balance to sender address
-    payable(msg.sender).transfer(amount);
+        // Transfer balance to sender address
+        payable(msg.sender).transfer(amount);
 
-    return true;
+        return true;
     }
 
 }
