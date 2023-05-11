@@ -1,13 +1,13 @@
 from django.shortcuts import render
 
 
-# Create your views here.
-
 def Home(request):
-    return render, "index.html"
+    return render(request, "rpds/index.html")
+
 
 def rpds_app(request):
-    return  render, "rpds.html"
+    return render(request, "rpds/rpds.html")
 
-def contact(request):
-    return render, "contact.html"
+
+def contact(request, contact_info):
+    return render(request, "rpds/contact.html")
