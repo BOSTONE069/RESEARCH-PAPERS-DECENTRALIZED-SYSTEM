@@ -9,12 +9,6 @@ import asyncio
 # create a web3 object using the Infura endpoint
 web3 = Web3(Web3.HTTPProvider('https://eth-sepolia.g.alchemy.com/v2/GUwpQv7dGLI2Ba4ecDTplOZmw2ubB2ue'))
 
-from django.shortcuts import render
-from web3 import Web3
-
-
-
-
 def Home(request):
     return render(request, "rpds/index.html")
 

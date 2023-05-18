@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.13;
 
 contract ResearchPapers {
 
@@ -34,7 +34,7 @@ contract ResearchPapers {
 
     // Constructor to set initial ISP token balance for contract owner
     constructor() {
-        balances[msg.sender] = totalSupply * conversionRate;
+        //balances[msg.sender] = totalSupply * conversionRate;
     }
 
     // Function to publish a research paper

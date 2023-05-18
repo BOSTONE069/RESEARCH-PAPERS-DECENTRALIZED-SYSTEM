@@ -1,5 +1,5 @@
-const research-paper = artifacts.require("researchpaper");
+const researchpaper = artifacts.require("researchpaper");
 
 module.exports = function(deployer) {
-  deployer.deploy(research-paper);
+  deployer.deploy(researchpaper);
 };
