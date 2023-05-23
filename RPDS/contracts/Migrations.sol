@@ -7,11 +7,10 @@ contract Migrations {
   uint256 public last_completed_migration;
 
   modifier restricted() {
-    require(msg.sender == owner, "Restricted to owner only");
-    _;
+    if (msg.sender == owner) _;
   }
 
-  constructor() {
+  constructor() public {
     owner = msg.sender;
   }
 
