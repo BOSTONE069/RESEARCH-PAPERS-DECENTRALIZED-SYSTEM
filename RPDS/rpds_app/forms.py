@@ -1,6 +1,6 @@
 from django import forms
 from .models import Contact
-
+from django.contrib.auth.forms import UserCreationForm
 
 # This is a Django form class for a contact form that includes an email field with specific attributes
 # for styling and validation.

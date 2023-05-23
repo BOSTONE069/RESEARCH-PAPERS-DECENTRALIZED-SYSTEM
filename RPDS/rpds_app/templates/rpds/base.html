@@ -29,8 +29,13 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="{% url  'home' %}" >Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url  'about'%}" >About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'rpds'%}">RPDS PAPERS</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login'%}">RPDS PAPERS</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'contact'%}" >Contact</a></li>
+                        <li class="nav-item">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary btn-sm rounded-pill me-md-2  mt-3" href="{% url  'connect_metamask' %}" role="button">Connect</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -38,7 +43,6 @@
         <!-- Masthead-->
        {% block body %}
         {% endblock %}
-        <!-- Signup-->
 
         <!-- Footer-->
         <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy;  RPDS <script>document.write(new Date().getFullYear());</script></div></footer>

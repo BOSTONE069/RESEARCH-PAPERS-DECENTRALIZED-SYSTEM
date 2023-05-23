@@ -1,17 +1,12 @@
+{% extends "rpds/base.html" %}
 {% load static %}
-<script>
-    function connectToMetaMask() {
-        axios.post('{% url 'connect_metamask' %}', { connect: true })
-            .then(response => {
-                console.log(response.data);
-                // Perform any additional actions based on the response
-            })
-            .catch(error => {
-                console.log(error);
-                // Handle any error that may occur during the request
-            });
-    }
-</script>
+{% block body %}
 
-<button onclick="connectToMetaMask()" class="btn btn-primary">Connect to MetaMask</button>
-<script src="{% static 'js/axios.min.js' %}"></script>
+      {% if connected_account %}
+    <h2>Connected Account: {{ connected_account }}</h2>
+        {% else %}
+            <h2>MetaMask not accessible</h2>
+        {% endif %}
+
+
+{% endblock %}

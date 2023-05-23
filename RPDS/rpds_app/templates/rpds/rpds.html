@@ -2,13 +2,5 @@
 {% load static %}
 
 {% block body %}
-    <div>
-        {% if connected %}
-            <p>Connected to MetaMask</p>
-            <p>Account: {{ account }}</p>
-        {% else %}
-            <p>MetaMask not connected</p>
-            <button id="connect-button"  class="btn btn-primary"><a href="{% url 'rpds' %}">Connect to MetaMask</a> </button>
-        {% endif %}
-    </div>
+    
 {% endblock %}

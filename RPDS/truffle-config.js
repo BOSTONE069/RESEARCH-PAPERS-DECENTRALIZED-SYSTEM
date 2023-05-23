@@ -1,7 +1,7 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 require("dotenv").config();
 
-const { PROJECT_ID, MNEMONIC } = process.env;
+const { PRODUCT_ID, MNEMONIC } = process.env;
 
 module.exports = {
   networks: {

@@ -10,6 +10,8 @@ urlpatterns = [
     path('rpds/', views.rpds_app, name='rpds'),
     path('contact/', views.contact, name='contact'),
     path('success', views.success, name='success'),
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
     path('connect-metamask/', views.connect_metamask, name='connect_metamask'),
 ]
 admin.site.site_header = 'RPDS Admin'

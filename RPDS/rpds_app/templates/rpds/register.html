@@ -15,15 +15,17 @@
       "
     >
       <div class="mt-5 pt-5 mb-5">
-        <h1 class="text-center mt-5 pt-5 mb-5">Log in</h1>
+        <h1 class="text-center mt-5 pt-5 mb-5">Sign Up</h1>
         <div class="mx-auto col-10 col-md-8 col-lg-2">
           <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <div class="col-sm-12">
-                {{ form.as_p }}
-                </div>
-            </div>
+    <label for="{{ form.first_name.id_for_label }}" class="col-sm-5 control-label">User Name:</label>
+    <div class="col-sm-15">
+      {{ form.username }}
+    </div>
+  </div>
+            {{ form.as_p }}
             <button type="submit" class="btn btn-primary mt-4">Sign Up</button>
           </form>
           <p class="text-center mt-3">
@@ -34,5 +36,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
