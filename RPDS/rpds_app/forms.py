@@ -7,12 +7,18 @@ from django.contrib.auth.forms import UserCreationForm
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['email']
+        fields = ['name', 'email']
         widgets = {
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter email address...',
-                'aria-label': 'Enter email address...',
-                'data-sb-validations': 'required,email'
+                'placeholder': "Enter email address...",
+                'aria-label': "Enter email address...",
+                'data-sb-validations': "required,email"
             }),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': "Enter name...",
+                'aria-label': "Enter name...",
+                'data-sb-validations': "required,name"
+            })
         }

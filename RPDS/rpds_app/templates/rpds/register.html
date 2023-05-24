@@ -1,6 +1,12 @@
 {% extends "rpds/base.html" %}
 {% load static %}
 {% block body %}
+{% load crispy_forms_tags %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+ <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+
     <div class="container-fluid p-0">
   <div class="row m-0">
     <div
@@ -8,7 +14,7 @@
       style="
         height: 100vh;
         color: yellow;
-        background-image: url({%static 'assets/img/signup.webp'%});
+        background-image: url({%static 'assets/img/web36.jpg' %});
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -16,19 +22,13 @@
     >
       <div class="mt-5 pt-5 mb-5">
         <h1 class="text-center mt-5 pt-5 mb-5">Sign Up</h1>
-        <div class="mx-auto col-10 col-md-8 col-lg-2">
+        <div class="mx-auto col-10 col-md-20 col-lg-6">
           <form method="post">
             {% csrf_token %}
-            <div class="form-group">
-    <label for="{{ form.first_name.id_for_label }}" class="col-sm-5 control-label">User Name:</label>
-    <div class="col-sm-15">
-      {{ form.username }}
-    </div>
-  </div>
-            {{ form.as_p }}
+            {{ form|crispy }}
             <button type="submit" class="btn btn-primary mt-4">Sign Up</button>
           </form>
-          <p class="text-center mt-3">
+          <p class="text-center mt-3 col-lg-6">
             Already have an account? <a href="{% url 'login' %}">Login</a>.
           </p>
         </div>

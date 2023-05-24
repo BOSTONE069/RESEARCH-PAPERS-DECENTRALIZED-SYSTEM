@@ -39,8 +39,9 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
+            name = form.cleaned_data['name']
             email = form.cleaned_data['email']
-            contact = Contact(email=email)
+            contact = Contact(name=name, email=email)
             contact.save()
             messages.success(request, "Your Email Address has been saved successfully")
             return redirect ("success")
@@ -49,34 +50,35 @@ def contact(request):
     return render(request, 'rpds/contact.html', {'form': form})
 
 def success(request):
+    # Render the success.html template
     return render(request, 'rpds/success.html')
+
+    # Redirect to the contact page after a delay
+    # return redirect('contact')
 
 
 def connect_metamask(request):
-    if request.method == 'POST':
-        # Check if MetaMask is installed and accessible
-        if Web3.isConnected():
-            # Create a Web3 instance connected to the user's MetaMask provider
-            web3 = Web3(Web3.WebsocketProvider(Web3.currentProvider))
+    web3 = Web3(Web3.HTTPProvider('https://eth-sepolia.g.alchemy.com/v2/GUwpQv7dGLI2Ba4ecDTplOZmw2ubB2ue'))
 
-            # Retrieve the user's accounts from MetaMask
-            accounts = web3.eth.accounts
+    # Check if MetaMask is installed and accessible
+    if web3.is_connected():
+        # Retrieve the user's accounts from MetaMask
+        accounts = web3.eth.accounts
 
-            # Process the accounts or perform other actions
+        # Process the accounts or perform other actions
+        # Example: Print the first account
+        if accounts:
+            connected_account = accounts[0]
+            print(connected_account)
 
-            # Example: Print the first account
-            if accounts:
-                connected_account = accounts[0]
-                print(connected_account)
+            # Pass the connected account to the template
+            return render(request, 'rpds/connect_metamask.html', {'connected_account': connected_account})
+    else:
+        # MetaMask is not available or not connected
+        print("MetaMask not accessible")
 
-                # Pass the connected account to the template
-                return render(request, 'rpds/connect_metamask.html', {'connected_account': connected_account})
-        else:
-            # MetaMask is not available or not connected
-            print("MetaMask not accessible")
-
-            # You can display an error message or redirect to an error page
-            return render(request, 'rpds/error.html', {'message': 'MetaMask not accessible'})
+        # You can display an error message or redirect to an error page
+        return render(request, 'rpds/error.html', {'message': 'MetaMask not accessible'})
 
     return render(request, 'rpds/connect_metamask.html')
 
