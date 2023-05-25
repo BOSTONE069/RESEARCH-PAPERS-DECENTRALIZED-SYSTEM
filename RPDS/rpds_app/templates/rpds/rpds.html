@@ -2,5 +2,34 @@
 {% load static %}
 
 {% block body %}
-    
+
+<div class="container-fluid p-0">
+    <div class="row m-0">
+    <div
+      class="col-lg-12 offset-lg-0 col-md-6 offset-md-2 col-sm-10 offset-sm-1 col-12"
+      style="
+        height: 100vh;
+        color: #a9d30e;
+        background-image: url({%static 'assets/img/web37.jpg' %});
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      "
+    >
+    <div style="margin-top: 100px; text-align: center;">
+      <h1>RESEARCH PAPERS</h1>
+      <br />
+    {% if files %}
+        {% for file in files %}
+            <h3>Name: {{ file.name }}</h3>
+            <p>IPFS Hash: {{ file.ipfs_hash }}, Date Pinned: {{ file.date_pinned }}</p>
+            <p>PRICE: 0.025 ETH,   <button type="button" class="btn btn-primary btn-sm background-color: #4CAF50;">PAY</button></p>
+        {% endfor %}
+    {% else %}
+        <p>Failed to get list of pinned files</p>
+    {% endif %}
+    <div>
+    </div>
+</div>
+</div>
 {% endblock %}
