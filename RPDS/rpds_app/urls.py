@@ -13,6 +13,7 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     path('connect-metamask/', views.connect_metamask, name='connect_metamask'),
+    path('logout/', views.logout_view, name='logout'),
 ]
 admin.site.site_header = 'RPDS Admin'
 admin.site.index_title = 'RPDS'

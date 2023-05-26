@@ -16,14 +16,17 @@
         background-position: center;
       "
     >
-    <div style="margin-top: 100px; text-align: center;">
+    <div style=" margin-top:100px; text-align: left; background-color: black; opacity: 80%; width: 80%; margin: 100px auto; border-radius: 40px; padding: 20px 30px;">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-danger btn-sm rounded-pill me-md-1  mt-4" href="{% url 'logout' %}" role="button">Log out</a>
+        </div>
       <h1>RESEARCH PAPERS</h1>
       <br />
     {% if files %}
         {% for file in files %}
-            <h3>Name: {{ file.name }}</h3>
+            <h3>TITLE: {{ file.name }}</h3>
             <p>IPFS Hash: {{ file.ipfs_hash }}, Date Pinned: {{ file.date_pinned }}</p>
-            <p>PRICE: 0.025 ETH,   <button type="button" class="btn btn-primary btn-sm background-color: #4CAF50;">PAY</button></p>
+            <p>PRICE: 0.025 ETH   <button type="button" class="btn btn-primary btn-sm background-color: #4CAF50;">PAY</button></p>
         {% endfor %}
     {% else %}
         <p>Failed to get list of pinned files</p>

@@ -14,10 +14,10 @@ from django.views.decorators.csrf import csrf_protect
 # from django.utils.decorators import ratelimit
 from django.conf import settings
 import asyncio
-
+from . import config
+import requests
 # contractAddress = 0x5B8609b04F00c48Abf9398da9D33E6DE097a6343
 # walletAdress =   0x967D5De076f1cba86eA1723453a475d29CE708E7
-
 
 
 # create a web3 object using the Infura endpoint
@@ -30,10 +30,37 @@ def Home(request):
 def about(request):
     return render(request, "rpds/about.html")
 
+def get_pinned_files():
+    pinata_api_url = 'https://api.pinata.cloud'
+    endpoint = '/data/pinList?status=pinned'
+    headers = {
+        'Content-Type': 'application/json',
+        'pinata_api_key': str(config.PINATA_API_Key),
+        'pinata_secret_api_key': str(config.PINATA_API_Secret)
+    }
+    response = requests.get(
+        f'{pinata_api_url}{endpoint}',
+        headers=headers
+    )
+    data = response.json()
 
+    files = []
+    if response.status_code == 200:
+        for item in data['rows']:
+            file_info = {
+                'name': item['metadata']['name'],
+                'ipfs_hash': item['ipfs_pin_hash'],
+                'date_pinned': item['date_pinned']
+            }
+            files.append(file_info)
+    else:
+        files.append({'error': 'Failed to get list of pinned files'})
+
+    return files
 def rpds_app(request):
+    files = get_pinned_files()
 
-    return render(request, "rpds/rpds.html")
+    return render(request, "rpds/rpds.html",  {'files': files})
 
 def contact(request):
     if request.method == 'POST':
@@ -148,3 +175,13 @@ def register_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'rpds/register.html', {'form': form})
+
+def logout_view(request):
+    """
+    Log out the current user and redirect to the login page
+
+    :param request: The current request object
+    :return: Redirects to the login page
+    """
+    logout(request)
+    return redirect('login')
