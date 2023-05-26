@@ -1,12 +1,18 @@
 from django.test import TestCase
 from .models import Contact
-
+from datetime import datetime
 # Create your tests here.
-class ContactFromTests(TestCase):
-        .
-    def test_create_contact_with_valid_email(self):
-        """
-        This function tests if a contact object can be created with a valid email address.
-        """
-        contact = Contact(email="test@example.com")
-        assert contact.email == "test@example.com"
+
+class ContactTests(TestCase):
+    def setUp(self):
+        self.contact = Contact.objects.create(name='John Doe', email='john@mail.com')
+
+    def test_contact_creation(self):
+        self.assertEqual(self.contact.name, 'John Doe')
+        self.assertEqual(self.contact.email, 'john@mail.com')
+        self.assertIsInstance(self.contact.created_at, datetime)
+
+    def test_string_representation(self):
+        self.assertEqual(str(self.contact), 'john@mail.com John Doe {}'.format(self.contact.created_at))
+
+        
