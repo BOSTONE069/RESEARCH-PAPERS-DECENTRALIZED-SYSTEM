@@ -44,24 +44,30 @@ print(balance_address2_in_wei)
 import requests
 import config as config
 
-pinata_api_url = 'https://api.pinata.cloud'
-endpoint = '/data/pinList?status=pinned'
-headers = {
-    'Content-Type': 'application/json',
-    'pinata_api_key': str(config.PINATA_API_Key),
-    'pinata_secret_api_key': str(config.PINATA_API_Secret)
-}
-response = requests.get(
-    f'{pinata_api_url}{endpoint}',
-    headers=headers
-)
-data = response.json()
+def get_pinned_files():
+    pinata_api_url = 'https://api.pinata.cloud'
+    endpoint = '/data/pinList?status=pinned'
+    headers = {
+        'Content-Type': 'application/json',
+        'pinata_api_key': str(config.PINATA_API_Key),
+        'pinata_secret_api_key': str(config.PINATA_API_Secret)
+    }
+    response = requests.get(
+        f'{pinata_api_url}{endpoint}',
+        headers=headers
+    )
+    data = response.json()
+    print(data)
+    files = []
+    if response.status_code == 200:
+        for item in data['rows']:
+            file_info = {
+                'name': item['metadata']['name'],
+                'ipfs_hash': item['ipfs_pin_hash'],
+                'date_pinned': item['date_pinned']
+            }
+            files.append(file_info)
+    else:
+        files.append({'error': 'Failed to get list of pinned files'})
 
-#print(data)
-if response.status_code == 200:
-    for item in data['rows']:
-        print(f"Name: {item['metadata']['name']}")
-        print(f"IPFS Hash: {item['ipfs_pin_hash']}")
-        print(f"Date Pinned: {item['date_pinned']}\n")
-else:
-    print('Failed to get list of pinned files')
+    return files
