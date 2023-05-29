@@ -35,11 +35,12 @@ crispy form using
 2. `myenv\Scripts\activate.bat` or `source myenv/bin/activate`
 3. `pip install django`
 4. `pip install django-crispy-forms`
-5. `pip install -U django-jazzmin`
-6. git clone https://github.com/BOSTONE069/RESEARCH-PAPERS-DECENTRALIZED-SYSTEM.git
-7. `python manage.py makemigrations `
-8. `python manage.py migrate`
-9. On local machine you can run the project using `python manage.py runserver`
+5. `pip install django-ratelimit`
+6. `pip install -U django-jazzmin`
+7. git clone https://github.com/BOSTONE069/RESEARCH-PAPERS-DECENTRALIZED-SYSTEM.git
+8. `python manage.py makemigrations `
+9. `python manage.py migrate`
+10. On local machine you can run the project using `python manage.py runserver`
 
 # Usage
 Go to the login page http://127.0.0.1:8000/login/
