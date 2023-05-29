@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<div class="container-fluid p-0">
+<div class="container-fluid p-0" xmlns:target="http://www.w3.org/1999/xhtml">
     <div class="row m-0">
     <div
       class="col-lg-12 offset-lg-0 col-md-6 offset-md-2 col-sm-10 offset-sm-1 col-12"
@@ -25,8 +25,8 @@
     {% if files %}
         {% for file in files %}
             <h3>TITLE: {{ file.name }}</h3>
-            <p><a href="https://gateway.pinata.cloud/ipfs/{{ file.ipfs_hash }}" target:"_blank" rel="noopener noreferrer">IPFS Hash: {{ file.ipfs_hash }}</a>, Date Pinned: {{ file.date_pinned }}</p>
-            <p>PRICE: 0.025 ETH   <button type="button" class="btn btn-primary btn-sm background-color: #4CAF50;" onclick="makePayment()">PAY</button></p>
+            <p> <a href="https://gateway.pinata.cloud/ipfs/{{ file.ipfs_hash }}" target:"_blank" rel="noopener noreferrer" > IPFS Hash: {{ file.ipfs_hash }}</a>, Date Pinned: {{ file.date_pinned }}</p>
+            <p>PRICE: 0.025 ETH   <button type="button" class="btn btn-primary btn-sm background-color: #4CAF50;" id="paymentAmount" onclick="makePayment()">PAY</button></p>
             <p id="paymentAdress">Wallet Address: 0x49b4973d2f77fa21eC778faf3490e96cf91D20Ff</p>
         {% endfor %}
     {% else %}
@@ -36,109 +36,5 @@
     </div>
 </div>
 </div>
-    <script type="text/javascript">
-      window.userWalletAddress = null;
-      const connectWallet = document.getElementById("connectWallet");
-      const walletAddress = document.getElementById("walletAddress");
-      const walletBalance = document.getElementById("walletBalance");
-      const paymentAmount = document.getElementById("paymentAmount");
-
-      function checkInstalled() {
-        if (typeof window.ethereum == "undefined") {
-          connectWallet.innerText =
-            "MetaMask isn't installed, please install it";
-          connectWallet.classList.remove();
-          connectWallet.classList.add();
-          return false;
-        }
-        connectWallet.addEventListener("click", connectWalletwithMetaMask);
-      }
-
-      async function connectWalletwithMetaMask() {
-        const accounts = await window.ethereum
-          .request({ method: "eth_requestAccounts" })
-          .catch((e) => {
-            console.error(e.message);
-            return;
-          });
-
-        if (!accounts) {
-          return;
-        }
-
-        window.userWalletAddress = accounts[0];
-        walletAddress.innerText = window.userWalletAddress;
-
-        connectWallet.innerText = "Sign Out";
-        connectWallet.removeEventListener("click", connectWalletwithMetaMask);
-        setTimeout(() => {
-          connectWallet.addEventListener("click", signOutOfMetaMask);
-        }, 200);
-      }
-
-      function signOutOfMetaMask() {
-        window.userWalletAddress = null;
-        walletAddress.innerText = "";
-        connectWallet.innerText = "Connect Wallet";
-
-        connectWallet.removeEventListener("click", signOutOfMetaMask);
-        setTimeout(() => {
-          connectWallet.addEventListener("click", connectWalletwithMetaMask);
-        }, 200);
-      }
-
-      async function checkBalance() {
-        let balance = await window.ethereum.request({
-            method: "eth_getBalance",
-            params: [window.userWalletAddress,
-            "latest"],
-          }).catch((err) => {
-            console.log(err);
-          });
-
-        walletBalance.innerText = 'Balance in Eth: '  + parseFloat(balance) / Math.pow(10, 18);
-      }
-      async function makePayment() {
-        const amount = paymentAmount.value;
-
-        if (!amount || isNaN(amount) || amount <= 0) {
-          alert("Please enter a valid payment amount.");
-          return;
-        }
-
-        const paymentAddressValue = paymentAddress.value.trim();
-
-        if (!paymentAddressValue) {
-          alert("Please enter a valid payment address.");
-          return;
-        }
-
-        const transactionParameters = {
-          from: window.userWalletAddress,
-          to: paymentAddressValue,
-          value: window.ethereum.utils.toHex(window.ethereum.utils.toWei(amount)),
-        };
-
-        try {
-          const txHash = await window.ethereum.request({
-            method: "eth_sendTransaction",
-            params: [transactionParameters],
-          });
-
-          console.log("Transaction hash:", txHash);
-
-          // Optional: You can show a success message or perform any additional actions after the payment is made.
-          alert("Payment successful!");
-        } catch (error) {
-          console.error("Payment error:", error);
-          alert("Payment failed. Please try again.");
-        }
-      }
-
-      pay.addEventListener("click", makePayment)
-
-      window.addEventListener("DOMContentLoaded", () => {
-        checkInstalled();
-      });
-    </script>
+        <script src="{% static 'js/payAmount.js' %}"></script>
 {% endblock %}

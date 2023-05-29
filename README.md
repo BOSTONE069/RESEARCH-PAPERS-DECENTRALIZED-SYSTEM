@@ -17,6 +17,7 @@ platform and earn revenue from the fees paid by users who access their papers. A
 RPDS will provide a secure and tamper-proof system for authors to publish their research,
 which will help to reduce the risk of plagiarism and ensure that their work is properly
 attributed.
+
 # Table of Contents
 - [Installation](#Installation)
 - [Usage](#Usage)
@@ -37,10 +38,11 @@ crispy form using
 4. `pip install django-crispy-forms`
 5. `pip install django-ratelimit`
 6. `pip install -U django-jazzmin`
-7. git clone https://github.com/BOSTONE069/RESEARCH-PAPERS-DECENTRALIZED-SYSTEM.git
-8. `python manage.py makemigrations `
-9. `python manage.py migrate`
-10. On local machine you can run the project using `python manage.py runserver`
+7. `npm intall packages.json`
+8. git clone https://github.com/BOSTONE069/RESEARCH-PAPERS-DECENTRALIZED-SYSTEM.git
+9. `python manage.py makemigrations `
+10. `python manage.py migrate`
+11. On local machine you can run the project using `python manage.py runserver`
 
 # Usage
 Go to the login page http://127.0.0.1:8000/login/
@@ -54,6 +56,7 @@ After successful login, you will be redirected to papers page where youy will be
 # Credits
 - [Django](#https://www.djangoproject.com/)
 - [Crispy-forms](#https://pypi.org/project/django-crispy-forms/)
+- [jazzmin-admin](#https://django-jazzmin.readthedocs.io/installation/)
 
 # License
 This project is licensed under the [MIT License](#https://www.mit.edu/~amini/LICENSE.md).
