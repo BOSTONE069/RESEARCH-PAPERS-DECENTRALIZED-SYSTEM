@@ -1,0 +1,144 @@
+{% extends "rpds/base.html" %}
+{% load static %}
+
+{% block body %}
+
+<div class="container-fluid p-0">
+    <div class="row m-0">
+    <div
+      class="col-lg-12 offset-lg-0 col-md-6 offset-md-2 col-sm-10 offset-sm-1 col-12"
+      style="
+        height: 100vh;
+        color: #a9d30e;
+        background-image: url({%static 'assets/img/web37.jpg' %});
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      "
+    >
+    <div style=" margin-top:100px; text-align: left; background-color: black; opacity: 80%; width: 80%; margin: 100px auto; border-radius: 40px; padding: 20px 30px;">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-danger btn-sm rounded-pill me-md-1  mt-4" href="{% url 'logout' %}" role="button">Log out</a>
+        </div>
+      <h1>RESEARCH PAPERS</h1>
+      <br />
+    {% if files %}
+        {% for file in files %}
+            <h3>TITLE: {{ file.name }}</h3>
+            <p><a href="https://gateway.pinata.cloud/ipfs/{{ file.ipfs_hash }}" target:"_blank" rel="noopener noreferrer">IPFS Hash: {{ file.ipfs_hash }}</a>, Date Pinned: {{ file.date_pinned }}</p>
+            <p>PRICE: 0.025 ETH   <button type="button" class="btn btn-primary btn-sm background-color: #4CAF50;" onclick="makePayment()">PAY</button></p>
+            <p id="paymentAdress">Wallet Address: 0x49b4973d2f77fa21eC778faf3490e96cf91D20Ff</p>
+        {% endfor %}
+    {% else %}
+        <p>Failed to get list of pinned files</p>
+    {% endif %}
+    <div>
+    </div>
+</div>
+</div>
+    <script type="text/javascript">
+      window.userWalletAddress = null;
+      const connectWallet = document.getElementById("connectWallet");
+      const walletAddress = document.getElementById("walletAddress");
+      const walletBalance = document.getElementById("walletBalance");
+      const paymentAmount = document.getElementById("paymentAmount");
+
+      function checkInstalled() {
+        if (typeof window.ethereum == "undefined") {
+          connectWallet.innerText =
+            "MetaMask isn't installed, please install it";
+          connectWallet.classList.remove();
+          connectWallet.classList.add();
+          return false;
+        }
+        connectWallet.addEventListener("click", connectWalletwithMetaMask);
+      }
+
+      async function connectWalletwithMetaMask() {
+        const accounts = await window.ethereum
+          .request({ method: "eth_requestAccounts" })
+          .catch((e) => {
+            console.error(e.message);
+            return;
+          });
+
+        if (!accounts) {
+          return;
+        }
+
+        window.userWalletAddress = accounts[0];
+        walletAddress.innerText = window.userWalletAddress;
+
+        connectWallet.innerText = "Sign Out";
+        connectWallet.removeEventListener("click", connectWalletwithMetaMask);
+        setTimeout(() => {
+          connectWallet.addEventListener("click", signOutOfMetaMask);
+        }, 200);
+      }
+
+      function signOutOfMetaMask() {
+        window.userWalletAddress = null;
+        walletAddress.innerText = "";
+        connectWallet.innerText = "Connect Wallet";
+
+        connectWallet.removeEventListener("click", signOutOfMetaMask);
+        setTimeout(() => {
+          connectWallet.addEventListener("click", connectWalletwithMetaMask);
+        }, 200);
+      }
+
+      async function checkBalance() {
+        let balance = await window.ethereum.request({
+            method: "eth_getBalance",
+            params: [window.userWalletAddress,
+            "latest"],
+          }).catch((err) => {
+            console.log(err);
+          });
+
+        walletBalance.innerText = 'Balance in Eth: '  + parseFloat(balance) / Math.pow(10, 18);
+      }
+      async function makePayment() {
+        const amount = paymentAmount.value;
+
+        if (!amount || isNaN(amount) || amount <= 0) {
+          alert("Please enter a valid payment amount.");
+          return;
+        }
+
+        const paymentAddressValue = paymentAddress.value.trim();
+
+        if (!paymentAddressValue) {
+          alert("Please enter a valid payment address.");
+          return;
+        }
+
+        const transactionParameters = {
+          from: window.userWalletAddress,
+          to: paymentAddressValue,
+          value: window.ethereum.utils.toHex(window.ethereum.utils.toWei(amount)),
+        };
+
+        try {
+          const txHash = await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameters],
+          });
+
+          console.log("Transaction hash:", txHash);
+
+          // Optional: You can show a success message or perform any additional actions after the payment is made.
+          alert("Payment successful!");
+        } catch (error) {
+          console.error("Payment error:", error);
+          alert("Payment failed. Please try again.");
+        }
+      }
+
+      pay.addEventListener("click", makePayment)
+
+      window.addEventListener("DOMContentLoaded", () => {
+        checkInstalled();
+      });
+    </script>
+{% endblock %}
