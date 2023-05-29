@@ -30,6 +30,7 @@ django-ckeditor==6.5.1
 django-crispy-forms==1.14.0
 django-jazzmin==2.6.0
 django-js-asset==2.0.0
+django-ratelimit==4.0.0
 emoji==1.6.1
 entrypoints==0.3
 eth-abi==4.0.0
