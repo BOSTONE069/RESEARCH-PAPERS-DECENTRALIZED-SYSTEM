@@ -70,3 +70,48 @@ class LoginViewTests(TestCase):
         self.assertRedirects(response, reverse('rpds'))
          # Check that the user is logged in
         self.assertTrue(response.wsgi_request.user.is_authenticated)
+
+class RegisterViewTest(TestCase):
+    def test_register_view_with_valid_form(self):
+        """
+        Test that a new user is created and authenticated when valid form data is submitted
+        """
+        url = reverse('register')
+        data = {
+            'username': 'testuser',
+            'password1': 'testpassword123',
+            'password2': 'testpassword123'
+        }
+        response = self.client.post(url, data)
+        self.assertRedirects(response, reverse('rpds'))
+        user = User.objects.get(username='testuser')
+        self.assertTrue(user.is_authenticated)
+    def test_register_view_with_invalid_form(self):
+        """
+        Test that the form displays errors when invalid form data is submitted
+        """
+        url = reverse('register')
+        data = {
+            'username': '',
+            'password1': '',
+            'password2': ''
+        }
+        response = self.client.post(url, data)
+        form = response.context['form']
+        self.assertFalse(form.is_valid())
+        self.assertContains(response, "This field is required.")
+    def test_register_view_with_existing_user(self):
+        """
+        Test that the form displays errors when a username that already exists is submitted
+        """
+        user = User.objects.create_user(username='existinguser', password='testpassword123')
+        url = reverse('register')
+        data = {
+            'username': 'existinguser',
+            'password1': 'testpassword123',
+            'password2': 'testpassword123'
+        }
+        response = self.client.post(url, data)
+        form = response.context['form']
+        self.assertFalse(form.is_valid())
+        self.assertContains(response, "A user with that username already exists.")

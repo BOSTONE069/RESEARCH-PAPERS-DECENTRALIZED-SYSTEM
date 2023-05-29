@@ -140,7 +140,6 @@ def login_view(request):
 # Fixed code with input validation
 
 @csrf_protect
-# @ratelimit(key='user', rate='5/h', block=True)
 def register_view(request):
     """
     This function handles user registration, including form validation, password encryption, and
