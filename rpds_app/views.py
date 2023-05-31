@@ -17,7 +17,7 @@ import asyncio
 from . import config
 import requests
 # contractAddress = 0x5B8609b04F00c48Abf9398da9D33E6DE097a6343
-# walletAdress =   0x967D5De076f1cba86eA1723453a475d29CE708E7
+# walletAddress =   0x967D5De076f1cba86eA1723453a475d29CE708E7
 
 
 # create a web3 object using the Infura endpoint
