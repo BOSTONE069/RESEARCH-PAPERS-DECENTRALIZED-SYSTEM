@@ -2,9 +2,9 @@
   "builds": [
     {
       "src": "RPDS/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
+      "use": "@ardnt/vercel-python-wsgi",
+      "config": { "maxLambdaSize": "15mb" }
+    }],
   "routes": [
     {
       "src": "/(.*)",
