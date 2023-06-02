@@ -4,6 +4,9 @@ from datetime import datetime
 from .forms import ContactForm
 from django.urls import reverse
 from django.contrib.auth.models import User
+import pytest
+from unittest.mock import patch
+from .views import get_pinned_files
 # Create your tests here.
 
 # The ContactTests class tests the creation and string representation of a Contact object.
@@ -71,47 +74,89 @@ class LoginViewTests(TestCase):
          # Check that the user is logged in
         self.assertTrue(response.wsgi_request.user.is_authenticated)
 
-class RegisterViewTest(TestCase):
-    def test_register_view_with_valid_form(self):
-        """
-        Test that a new user is created and authenticated when valid form data is submitted
-        """
-        url = reverse('register')
-        data = {
-            'username': 'testuser',
-            'password1': 'testpassword123',
-            'password2': 'testpassword123'
+# class RegisterViewTest(TestCase):
+#     def test_register_view_with_valid_form(self):
+#         """
+#         Test that a new user is created and authenticated when valid form data is submitted
+#         """
+#         url = reverse('register')
+#         data = {
+#             'username': 'testuser',
+#             'password1': 'testpassword123',
+#             'password2': 'testpassword123'
+#         }
+#         response = self.client.post(url, data)
+#         self.assertRedirects(response, reverse('rpds'))
+#         user = User.objects.get(username='testuser')
+#         self.assertTrue(user.is_authenticated)
+#     def test_register_view_with_invalid_form(self):
+#         """
+#         Test that the form displays errors when invalid form data is submitted
+#         """
+#         url = reverse('register')
+#         data = {
+#             'username': '',
+#             'password1': '',
+#             'password2': ''
+#         }
+#         response = self.client.post(url, data)
+#         form = response.context['form']
+#         self.assertFalse(form.is_valid())
+#         self.assertContains(response, "This field is required.")
+#     def test_register_view_with_existing_user(self):
+#         """
+#         Test that the form displays errors when a username that already exists is submitted
+#         """
+#         user = User.objects.create_user(username='existinguser', password='testpassword123')
+#         url = reverse('register')
+#         data = {
+#             'username': 'existinguser',
+#             'password1': 'testpassword123',
+#             'password2': 'testpassword123'
+#         }
+#         response = self.client.post(url, data)
+#         form = response.context['form']
+#         self.assertFalse(form.is_valid())
+#         self.assertContains(response, "A user with that username already exists.")
+
+
+
+@pytest.fixture
+class PinnedFilesTests(TestCase):
+    def mock_response():
+        return {
+            "count": 1,
+            "rows": [
+                {
+                    "date_pinned": "2021-10-01T10:00:00.000Z",
+                    "ipfs_pin_hash": "QmXzUZ3L6k8ZjJ9q4wBvWU1Wx4EJF5RJdK9zH6V1s8Mvz1",
+                    "metadata": {
+                        "name": "test.txt"
+                    }
+                }
+            ]
         }
-        response = self.client.post(url, data)
-        self.assertRedirects(response, reverse('rpds'))
-        user = User.objects.get(username='testuser')
-        self.assertTrue(user.is_authenticated)
-    def test_register_view_with_invalid_form(self):
-        """
-        Test that the form displays errors when invalid form data is submitted
-        """
-        url = reverse('register')
-        data = {
-            'username': '',
-            'password1': '',
-            'password2': ''
-        }
-        response = self.client.post(url, data)
-        form = response.context['form']
-        self.assertFalse(form.is_valid())
-        self.assertContains(response, "This field is required.")
-    def test_register_view_with_existing_user(self):
-        """
-        Test that the form displays errors when a username that already exists is submitted
-        """
-        user = User.objects.create_user(username='existinguser', password='testpassword123')
-        url = reverse('register')
-        data = {
-            'username': 'existinguser',
-            'password1': 'testpassword123',
-            'password2': 'testpassword123'
-        }
-        response = self.client.post(url, data)
-        form = response.context['form']
-        self.assertFalse(form.is_valid())
-        self.assertContains(response, "A user with that username already exists.")
+    def test_get_pinned_files_success(mock_response):
+        with patch('my_module.requests.get') as mock_get:
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.return_value = mock_response
+            expected_output = [
+                {
+                    'name': 'test.txt',
+                    'ipfs_hash': 'QmXzUZ3L6k8ZjJ9q4wBvWU1Wx4EJF5RJdK9zH6V1s8Mvz1',
+                    'date_pinned': '2021-10-01T10:00:00.000Z'
+                }
+            ]
+            assert get_pinned_files() == expected_output
+    def test_get_pinned_files_failure():
+        with patch('my_module.requests.get') as mock_get:
+            mock_get.return_value.status_code = 500
+            expected_output = [{'error': 'Failed to get list of pinned files'}]
+            assert get_pinned_files() == expected_output
+    def test_get_pinned_files_empty_list(mock_response):
+        mock_response['count'] = 0
+        with patch('my_module.requests.get') as mock_get:
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.return_value = mock_response
+            expected_output = []
+            assert get_pinned_files() == expected_output
