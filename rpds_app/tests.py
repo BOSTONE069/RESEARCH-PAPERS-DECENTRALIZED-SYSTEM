@@ -137,6 +137,14 @@ class PinnedFilesTests(TestCase):
             ]
         }
     def test_get_pinned_files_success(mock_response):
+        """
+        This is a unit test for the `get_pinned_files()` function that checks if it returns the expected
+        output when given a mock response with a status code of 200.
+
+        :param mock_response: This is a parameter that represents the expected response from the mocked
+        API call. It is used to simulate a successful API response and ensure that the function under
+        test can handle the response correctly
+        """
         with patch('my_module.requests.get') as mock_get:
             mock_get.return_value.status_code = 200
             mock_get.return_value.json.return_value = mock_response
@@ -149,11 +157,21 @@ class PinnedFilesTests(TestCase):
             ]
             assert get_pinned_files() == expected_output
     def test_get_pinned_files_failure():
+        """
+        This is a unit test function that tests the failure scenario of the "get_pinned_files" function in
+        the "my_module" module.
+        """
         with patch('my_module.requests.get') as mock_get:
             mock_get.return_value.status_code = 500
             expected_output = [{'error': 'Failed to get list of pinned files'}]
             assert get_pinned_files() == expected_output
     def test_get_pinned_files_empty_list(mock_response):
+        """
+        This is a unit test for the `get_pinned_files()` function when the response count is 0.
+
+        :param mock_response: It is a dictionary that represents a mock response from an API call. It
+        contains a 'count' key that represents the number of pinned files in the response
+        """
         mock_response['count'] = 0
         with patch('my_module.requests.get') as mock_get:
             mock_get.return_value.status_code = 200
