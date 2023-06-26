@@ -4,7 +4,7 @@ from web3 import Web3
 from django.http import HttpResponseRedirect
 from .models import Contact
 from django.core.exceptions import ValidationError
-from .forms import ContactForm
+from .forms import ContactForm, ArticleForm
 from django.utils.html import escape
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
@@ -184,3 +184,14 @@ def logout_view(request):
     """
     logout(request)
     return redirect('login')
+
+def article_create(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your Article has been saved successfully")
+            return redirect ("success")
+    else:
+        form = ArticleForm()
+    return render(request, 'rpds/submit.html', {'form': form})

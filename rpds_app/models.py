@@ -11,3 +11,11 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.email} {self.name} {self.created_at}"
+# models.py
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

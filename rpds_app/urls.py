@@ -14,6 +14,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('connect-metamask/', views.connect_metamask, name='connect_metamask'),
     path('logout/', views.logout_view, name='logout'),
+    path('submit/', views.article_create, name='submit'),
 ]
 admin.site.site_header = 'RPDS Admin'
 admin.site.index_title = 'RPDS'
