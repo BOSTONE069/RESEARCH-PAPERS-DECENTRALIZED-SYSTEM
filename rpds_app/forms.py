@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 # This is a Django form class for a contact form that includes an email field with specific attributes
 # for styling and validation.
+# The ContactForm class is a form that allows users to enter their name and email address.
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
@@ -23,6 +24,8 @@ class ContactForm(forms.ModelForm):
             })
         }
 
+# The `ArticleForm` class is a form that is used to create or update an `Article` model, with fields
+# for `title`, `author`, and `content`, and custom styling for the form inputs.
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
