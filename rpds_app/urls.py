@@ -4,6 +4,10 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
+# The `urlpatterns` variable is a list of URL patterns that Django will use to match incoming requests
+# to the corresponding view functions. Each URL pattern is defined using the `path()` function, which
+# takes three arguments: the URL pattern, the view function to be called when the pattern is matched,
+# and an optional name for the URL pattern.
 urlpatterns = [
     path('', views.Home, name='home'),
     path('about/', views.about, name='about'),
