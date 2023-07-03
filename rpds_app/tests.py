@@ -12,20 +12,34 @@ from .views import get_pinned_files
 # The ContactTests class tests the creation and string representation of a Contact object.
 class ContactTests(TestCase):
     def setUp(self):
+        """
+        The setUp function creates a Contact object with the name 'John Doe' and email 'john@mail.com'.
+        """
         self.contact = Contact.objects.create(name='John Doe', email='john@mail.com')
 
     def test_contact_creation(self):
+        """
+        The function tests the creation of a contact object and checks if the name, email, and
+        created_at attributes are set correctly.
+        """
         self.assertEqual(self.contact.name, 'John Doe')
         self.assertEqual(self.contact.email, 'john@mail.com')
         self.assertIsInstance(self.contact.created_at, datetime)
 
     def test_string_representation(self):
+        """
+        The function tests the string representation of a contact object.
+        """
         self.assertEqual(str(self.contact), 'john@mail.com John Doe {}'.format(self.contact.created_at))
 
 # This is a test case for a Django view that tests whether the view uses a contact form, saves data
 # for valid form submission, and does not save data for invalid form submission.
 class ContactViewTestCase(TestCase):
      def setUp(self):
+        """
+        The setUp function sets up the necessary variables for testing the 'contact' URL with valid
+        data.
+        """
         self.url = reverse('contact')
         self.valid_data = {
             'name': 'John Doe',
@@ -33,10 +47,17 @@ class ContactViewTestCase(TestCase):
         }
 
      def test_contact_view_should_use_contact_form(self):
+        """
+        The function tests whether the contact view uses the contact form.
+        """
         response = self.client.get(self.url)
         self.assertIsInstance(response.context['form'], ContactForm)
 
      def test_contact_view_should_save_data_for_valid_form_submission(self):
+        """
+        The function tests if a valid form submission saves the data correctly and redirects to the
+        success page.
+        """
         response = self.client.post(self.url, self.valid_data)
         self.assertEqual(Contact.objects.count(), 1)
         self.assertEqual(Contact.objects.first().name, 'John Doe')
@@ -44,6 +65,9 @@ class ContactViewTestCase(TestCase):
         self.assertRedirects(response, reverse('success'))
 
      def test_contact_view_should_not_save_data_for_invalid_form_submission(self):
+        """
+        The function tests that invalid form submissions do not save data and display an error message.
+        """
         invalid_data = {
             'name': 'John Doe',
             'email': 'invalid-email'
