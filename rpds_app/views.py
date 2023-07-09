@@ -36,6 +36,16 @@ def Home(request):
 
 
 def about(request):
+    """
+    The above function is a view function in a Django web application that renders the "about.html"
+    template.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information about the request, such as the HTTP method (GET, POST, etc.),
+    headers, cookies, and the requested URL. It is typically passed as the first parameter to view
+    functions in Django
+    :return: the rendered "about.html" template.
+    """
     return render(request, "rpds/about.html")
 
 def get_pinned_files():
