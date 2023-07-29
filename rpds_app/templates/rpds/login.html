@@ -1,4 +1,6 @@
-{% extends "rpds/base.html" %} {% load static %} {% block body %}
+{% extends "rpds/base.html" %} 
+{% load static %} 
+{% block body %}
 {% load crispy_forms_tags %}
 <div class="container-fluid p-0">
   <div class="row m-0">
@@ -18,7 +20,7 @@
         <h1 class="text-center mt-5 pt-5 mb-5">Log In To View Research Papers</h1>
         <div class="mx-auto col-10 col-md-8 col-lg-2">
           <form method="post">
-            {% csrf_token %} {{ form|crispy }}
+            {% csrf_token %} {{ form.as_p }}
             <button type="submit" class="btn btn-primary mt-4">Log in</button>
           </form>
           <p class="text-center mt-3">

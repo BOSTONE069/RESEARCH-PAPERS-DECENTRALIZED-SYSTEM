@@ -26,7 +26,7 @@
         <div class="mx-auto col-10 col-md-20 col-lg-6">
           <form method="post">
             {% csrf_token %}
-            {{ form|crispy }}
+            {{ form.as_p }}
             <button type="submit" class="btn btn-primary mt-4">Sign Up</button>
           </form>
           <p class="text-center mt-3 col-lg-6">
