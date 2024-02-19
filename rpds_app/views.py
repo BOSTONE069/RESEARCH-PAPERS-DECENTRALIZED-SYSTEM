@@ -4,7 +4,7 @@ from web3 import Web3
 from django.http import HttpResponseRedirect
 from .models import Contact
 from django.core.exceptions import ValidationError
-from .forms import ContactForm
+from .forms import ContactForm, ArticleForm
 from django.utils.html import escape
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
@@ -24,13 +24,38 @@ import requests
 web3 = Web3(Web3.HTTPProvider('https://eth-sepolia.g.alchemy.com/v2/GUwpQv7dGLI2Ba4ecDTplOZmw2ubB2ue'))
 
 def Home(request):
+    """
+    The function "Home" returns a rendered HTML template called "index.html" when a request is made.
+
+    :param request: The request parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the HTTP method (GET, POST, etc.), headers, user session,
+    and any data sent in the request body
+    :return: the rendered HTML template "rpds/index.html".
+    """
     return render(request, "rpds/index.html")
 
 
 def about(request):
+    """
+    The above function is a view function in a Django web application that renders the "about.html"
+    template.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information about the request, such as the HTTP method (GET, POST, etc.),
+    headers, cookies, and the requested URL. It is typically passed as the first parameter to view
+    functions in Django
+    :return: the rendered "about.html" template.
+    """
     return render(request, "rpds/about.html")
 
 def get_pinned_files():
+    """
+    The function `get_pinned_files` retrieves a list of pinned files from the Pinata API.
+    :return: The function `get_pinned_files` returns a list of dictionaries containing information about
+    pinned files. Each dictionary in the list includes the file name, IPFS hash, and the date it was
+    pinned. If there is an error in retrieving the list of pinned files, a dictionary with an 'error'
+    key will be returned.
+    """
     pinata_api_url = 'https://api.pinata.cloud'
     endpoint = '/data/pinList?status=pinned'
     headers = {
@@ -57,12 +82,34 @@ def get_pinned_files():
         files.append({'error': 'Failed to get list of pinned files'})
 
     return files
+
 def rpds_app(request):
+    """
+    The function `rpds_app` retrieves pinned files and renders the "rpds.html" template with the files
+    as context.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method, headers, and any data sent with the
+    request. It is typically passed to view functions in Django to handle the request and generate a
+    response
+    :return: The function `rpds_app` is returning a rendered HTML template called "rpds.html" with a
+    context variable `files` that contains the result of the `get_pinned_files()` function.
+    """
     files = get_pinned_files()
 
     return render(request, "rpds/rpds.html",  {'files': files})
 
 def contact(request):
+    """
+    The `contact` function handles a POST request to save a contact form, and renders the contact form
+    for a GET request.
+
+    :param request: The request object represents the HTTP request that the user made to the server. It
+    contains information such as the user's browser, IP address, and any data that was sent with the
+    request
+    :return: a rendered HTML template called 'rpds/contact.html' along with a dictionary containing the
+    form object.
+    """
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -184,3 +231,23 @@ def logout_view(request):
     """
     logout(request)
     return redirect('login')
+
+def article_create(request):
+    """
+    The function `article_create` is used to create a new article by handling a POST request, validating
+    the form data, saving the article, and displaying a success message.
+
+    :param request: The request object represents the HTTP request that the user made to the server. It
+    contains information such as the HTTP method (GET, POST, etc.), headers, and any data sent with the
+    request
+    :return: a rendered HTML template called 'submit.html' with the form as a context variable.
+    """
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your Article has been saved successfully")
+            return redirect ("success")
+    else:
+        form = ArticleForm()
+    return render(request, 'rpds/submit.html', {'form': form})
