@@ -16,12 +16,14 @@ from django.conf import settings
 import asyncio
 from . import config
 import requests
+
 # contractAddress = 0x5B8609b04F00c48Abf9398da9D33E6DE097a6343
 # walletAddress =   0x967D5De076f1cba86eA1723453a475d29CE708E7
 
 
 # create a web3 object using the Infura endpoint
 web3 = Web3(Web3.HTTPProvider('https://eth-sepolia.g.alchemy.com/v2/GUwpQv7dGLI2Ba4ecDTplOZmw2ubB2ue'))
+
 
 def Home(request):
     """
@@ -47,6 +49,7 @@ def about(request):
     :return: the rendered "about.html" template.
     """
     return render(request, "rpds/about.html")
+
 
 def get_pinned_files():
     """
@@ -83,6 +86,7 @@ def get_pinned_files():
 
     return files
 
+
 def rpds_app(request):
     """
     The function `rpds_app` retrieves pinned files and renders the "rpds.html" template with the files
@@ -97,7 +101,8 @@ def rpds_app(request):
     """
     files = get_pinned_files()
 
-    return render(request, "rpds/rpds.html",  {'files': files})
+    return render(request, "rpds/rpds.html", {'files': files})
+
 
 def contact(request):
     """
@@ -118,10 +123,11 @@ def contact(request):
             contact = Contact(name=name, email=email)
             contact.save()
             messages.success(request, "Your Email Address has been saved successfully")
-            return redirect ("success")
+            return redirect("success")
     else:
         form = ContactForm()
     return render(request, 'rpds/contact.html', {'form': form})
+
 
 def success(request):
     # Render the success.html template
@@ -184,6 +190,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'rpds/login.html', {'form': form})
 
+
 # Fixed code with input validation
 
 @csrf_protect
@@ -222,6 +229,7 @@ def register_view(request):
         form = UserCreationForm()
     return render(request, 'rpds/register.html', {'form': form})
 
+
 def logout_view(request):
     """
     Log out the current user and redirect to the login page
@@ -231,6 +239,7 @@ def logout_view(request):
     """
     logout(request)
     return redirect('login')
+
 
 def article_create(request):
     """
@@ -247,7 +256,7 @@ def article_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your Article has been saved successfully")
-            return redirect ("success")
+            return redirect("success")
     else:
         form = ArticleForm()
     return render(request, 'rpds/submit.html', {'form': form})

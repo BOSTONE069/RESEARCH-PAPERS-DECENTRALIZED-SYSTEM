@@ -1,14 +1,11 @@
 from web3 import Web3
 
-
 web3 = Web3(Web3.HTTPProvider('https://eth-sepolia.g.alchemy.com/v2/GUwpQv7dGLI2Ba4ecDTplOZmw2ubB2ue'))
 
-
-#print(web3.is_connected())
+# print(web3.is_connected())
 
 balance = web3.eth.get_balance('0x967D5De076f1cba86eA1723453a475d29CE708E7')
 balance_address1_in_wei = web3.from_wei(balance, 'ether')
-
 
 print(balance_address1_in_wei)
 
@@ -24,11 +21,10 @@ nonce = web3.eth.get_transaction_count(address1)
 tx = {
     'nonce': nonce,
     'to': address2,
-    'value':web3.to_wei(0.001, 'ether'),
+    'value': web3.to_wei(0.001, 'ether'),
     'gas': 21000,
     'gasPrice': web3.to_wei(40, 'gwei')
 }
-
 
 signed_tx = web3.eth.account.sign_transaction(tx, private_key)
 
@@ -40,9 +36,9 @@ balance_address2_in_wei = web3.from_wei(balance_address2, 'ether')
 
 print(balance_address2_in_wei)
 
-
 import requests
 import config as config
+
 
 def get_pinned_files():
     pinata_api_url = 'https://api.pinata.cloud'
